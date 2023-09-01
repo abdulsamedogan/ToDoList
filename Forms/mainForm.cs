@@ -7,25 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ToDoList.Classes;
 
 namespace ToDoList
 {
-    public partial class addListForm : Form
+    public partial class mainForm : Form
     {
-        public addListForm()
+        public mainForm()
         {
             InitializeComponent();
         }
 
-        private void addListForm_Load(object sender, EventArgs e)
+        private void addListFormButton_Click(object sender, EventArgs e)
+
         {
-
-        }
-
-        private void addListButton_Click(object sender, EventArgs e)
-        {
-
-            this.Close();
+            
+            addListForm addListForm = new addListForm();
+            addListForm.Show();
         }
     }
 }

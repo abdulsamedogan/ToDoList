@@ -46,25 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="addListForm.cs">
+    <Compile Include="Forms\addListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="addListForm.Designer.cs">
+    <Compile Include="Forms\addListForm.Designer.cs">
       <DependentUpon>addListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="mainForm.cs">
+    <Compile Include="Forms\mainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="mainForm.Designer.cs">
+    <Compile Include="Forms\mainForm.Designer.cs">
       <DependentUpon>mainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlConnection.cs" />
-    <EmbeddedResource Include="addListForm.resx">
+    <Compile Include="SqlClasses\SqlConnection.cs" />
+    <Compile Include="SqlClasses\sqlOperations.cs" />
+    <EmbeddedResource Include="Forms\addListForm.resx">
       <DependentUpon>addListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="mainForm.resx">
+    <EmbeddedResource Include="Forms\mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

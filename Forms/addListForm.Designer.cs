@@ -31,6 +31,8 @@
             this.addListButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
             this.titleBox = new System.Windows.Forms.TextBox();
+            this.descriptionLabel = new System.Windows.Forms.Label();
+            this.descriptionBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // addListButton
@@ -59,11 +61,29 @@
             this.titleBox.Size = new System.Drawing.Size(416, 20);
             this.titleBox.TabIndex = 2;
             // 
+            // descriptionLabel
+            // 
+            this.descriptionLabel.AutoSize = true;
+            this.descriptionLabel.Location = new System.Drawing.Point(49, 110);
+            this.descriptionLabel.Name = "descriptionLabel";
+            this.descriptionLabel.Size = new System.Drawing.Size(60, 13);
+            this.descriptionLabel.TabIndex = 3;
+            this.descriptionLabel.Text = "Description";
+            // 
+            // descriptionBox
+            // 
+            this.descriptionBox.Location = new System.Drawing.Point(52, 146);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(413, 20);
+            this.descriptionBox.TabIndex = 4;
+            // 
             // addListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(666, 390);
+            this.Controls.Add(this.descriptionBox);
+            this.Controls.Add(this.descriptionLabel);
             this.Controls.Add(this.titleBox);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.addListButton);
@@ -80,5 +100,7 @@
         private System.Windows.Forms.Button addListButton;
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.TextBox titleBox;
+        private System.Windows.Forms.Label descriptionLabel;
+        private System.Windows.Forms.TextBox descriptionBox;
     }
 }
