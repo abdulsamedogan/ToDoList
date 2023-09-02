@@ -33,6 +33,7 @@
             this.titleBox = new System.Windows.Forms.TextBox();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.descriptionBox = new System.Windows.Forms.TextBox();
+            this.monthCalendarAddList = new System.Windows.Forms.MonthCalendar();
             this.SuspendLayout();
             // 
             // addListButton
@@ -77,11 +78,18 @@
             this.descriptionBox.Size = new System.Drawing.Size(413, 20);
             this.descriptionBox.TabIndex = 4;
             // 
+            // monthCalendarAddList
+            // 
+            this.monthCalendarAddList.Location = new System.Drawing.Point(491, 40);
+            this.monthCalendarAddList.Name = "monthCalendarAddList";
+            this.monthCalendarAddList.TabIndex = 5;
+            // 
             // addListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 390);
+            this.ClientSize = new System.Drawing.Size(783, 315);
+            this.Controls.Add(this.monthCalendarAddList);
             this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.descriptionLabel);
             this.Controls.Add(this.titleBox);
@@ -102,5 +110,6 @@
         private System.Windows.Forms.TextBox titleBox;
         private System.Windows.Forms.Label descriptionLabel;
         private System.Windows.Forms.TextBox descriptionBox;
+        private System.Windows.Forms.MonthCalendar monthCalendarAddList;
     }
 }

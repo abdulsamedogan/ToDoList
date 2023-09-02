@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.monthCalendarMain = new System.Windows.Forms.MonthCalendar();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addListFormButton = new System.Windows.Forms.Button();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,13 +52,17 @@
             this.panel2.Size = new System.Drawing.Size(537, 162);
             this.panel2.TabIndex = 2;
             // 
-            // panel4
+            // monthCalendarMain
             // 
-            this.panel4.Controls.Add(this.addListFormButton);
-            this.panel4.Location = new System.Drawing.Point(307, 41);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(537, 162);
-            this.panel4.TabIndex = 5;
+            this.monthCalendarMain.Location = new System.Drawing.Point(18, 41);
+            this.monthCalendarMain.Name = "monthCalendarMain";
+            this.monthCalendarMain.TabIndex = 4;
+            this.monthCalendarMain.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendarMain_DateChanged);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // addListFormButton
             // 
@@ -68,11 +74,15 @@
             this.addListFormButton.UseVisualStyleBackColor = true;
             this.addListFormButton.Click += new System.EventHandler(this.addListFormButton_Click);
             // 
-            // monthCalendar1
+            // panel4
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(18, 41);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 4;
+            this.panel4.AutoScroll = true;
+            this.panel4.BackColor = System.Drawing.SystemColors.Info;
+            this.panel4.Controls.Add(this.addListFormButton);
+            this.panel4.Location = new System.Drawing.Point(307, 41);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(537, 162);
+            this.panel4.TabIndex = 5;
             // 
             // mainForm
             // 
@@ -81,7 +91,7 @@
             this.ClientSize = new System.Drawing.Size(1195, 638);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.monthCalendar1);
+            this.Controls.Add(this.monthCalendarMain);
             this.Controls.Add(this.panel1);
             this.Name = "mainForm";
             this.Text = "Form1";
@@ -94,9 +104,10 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.MonthCalendar monthCalendarMain;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Button addListFormButton;
+        private System.Windows.Forms.Panel panel4;
     }
 }
 

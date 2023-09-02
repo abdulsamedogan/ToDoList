@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ToDoList.Classes;
 
 namespace ToDoList.SqlClasses
@@ -25,7 +27,7 @@ namespace ToDoList.SqlClasses
                     cmd.Parameters.AddWithValue("@title", title);
                     cmd.Parameters.AddWithValue("@description", description);
                     cmd.Parameters.AddWithValue("@check", check);
-          
+
 
 
                     cmd.ExecuteNonQuery();
@@ -37,10 +39,59 @@ namespace ToDoList.SqlClasses
             }
             finally
             {
-               
+
                 SqlConnectionClass.CloseConnection();
             }
 
         }
+
+        public static List<List<string>> getFromDate(DateTime date)
+        {
+            List<List<string>> infoList = new List<List<string>>();
+            SqlDataReader reader = null;
+            try
+            {
+                SqlConnectionClass.OpenConnection();
+
+                string query = "SELECT * FROM dbo.List WHERE Date = @selectedDate";
+                using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
+                {
+
+
+
+                    cmd.Parameters.AddWithValue("@selectedDate", date);
+
+                    reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        
+                        while (reader.Read())
+                        {
+                            infoList.Add(new List<string> { reader["Title"].ToString(), reader["Description"].ToString() });
+                        }
+                            
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("No data found on selected date.");
+                    }
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close(); 
+                }
+
+
+                SqlConnectionClass.CloseConnection();
+
+                
+            }
+            return infoList;
+        }
+
     }
 }

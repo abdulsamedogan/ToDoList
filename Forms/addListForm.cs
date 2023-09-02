@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,9 +27,14 @@ namespace ToDoList
         private void addListButton_Click(object sender, EventArgs e)
         {
            
-            sqlOperations.addListValue(DateTime.Now,titleBox.Text, descriptionBox.Text,true);
+            sqlOperations.addListValue(monthCalendarAddList.SelectionStart,titleBox.Text, descriptionBox.Text,false);
            
             this.Close();
+        }
+        private void monthCalendarAddList_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+            
         }
     }
 }
