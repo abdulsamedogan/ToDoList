@@ -53,7 +53,7 @@ namespace ToDoList.SqlClasses
             {
                 SqlConnectionClass.OpenConnection();
 
-                string query = "SELECT * FROM dbo.List WHERE Date = @selectedDate";
+                string query = "SELECT * FROM dbo.List WHERE Date = @selectedDate AND [Check] ='false'";
                 using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
                 {
 
@@ -91,6 +91,31 @@ namespace ToDoList.SqlClasses
                 
             }
             return infoList;
+        }
+
+        public static void updateCheckBox (string title)
+        {
+            try
+            {
+                SqlConnectionClass.OpenConnection();
+
+                string query = "UPDATE List SET check = 1 WHERE Title = @Title";
+                using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
+                {
+
+
+
+                    cmd.Parameters.AddWithValue("@Title", title);
+
+                   
+                }
+                SqlConnectionClass.CloseConnection();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Hata: " + ex.Message);
+            }
+
         }
 
     }
