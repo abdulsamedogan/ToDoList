@@ -47,9 +47,9 @@
             // 
             // panel2
             // 
-            this.panel2.Location = new System.Drawing.Point(307, 237);
+            this.panel2.Location = new System.Drawing.Point(307, 314);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(537, 162);
+            this.panel2.Size = new System.Drawing.Size(537, 245);
             this.panel2.TabIndex = 2;
             // 
             // monthCalendarMain
@@ -81,7 +81,7 @@
             this.toDoListPanel.Controls.Add(this.addListFormButton);
             this.toDoListPanel.Location = new System.Drawing.Point(307, 41);
             this.toDoListPanel.Name = "toDoListPanel";
-            this.toDoListPanel.Size = new System.Drawing.Size(537, 162);
+            this.toDoListPanel.Size = new System.Drawing.Size(537, 252);
             this.toDoListPanel.TabIndex = 5;
             // 
             // mainForm

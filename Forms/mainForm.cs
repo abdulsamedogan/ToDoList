@@ -40,7 +40,8 @@ namespace ToDoList
         }
 
         private void writeToDoList(DateTime date)
-        {
+        {   
+            Label tempLabel = new Label(); 
             List<List<string>> infoList = sqlOperations.getFromDate(date);
             for (int i = 0; i < infoList.Count; i++)
             {
@@ -49,16 +50,51 @@ namespace ToDoList
                 CheckBox checkBox = new CheckBox();
                 checkBox.CheckedChanged += checkBox_CheckedChanged;
                 checkBox.Text = infoList[i][0].ToString();
-                checkBox.Location = new Point(3, 16 + (i * 50));
+                checkBox.Width = 200;
+               
+                checkBox.Location = new Point(3, tempLabel.Bottom+10 );
                 toDoListPanel.Controls.Add(checkBox);
 
+                int bottomLinePoint = 80;
 
                 Label description = new Label();
-                description.Text = infoList[i][1].ToString();
-                description.Location = new Point(40, 40 + (i * 50));
+                description.Text = descriptionParse(infoList[i][1].ToString(), bottomLinePoint);
+                description.AutoSize = true;
+                description.Location = new Point(40, checkBox.Bottom+1);
+                tempLabel = description;
                 toDoListPanel.Controls.Add(description);
 
+                /*RichTextBox description = new RichTextBox();
+                description.Text = infoList[i][1].ToString();
+                description.Location = new Point(40, 40 + (i * 50));
+                description.ReadOnly = true;
+                description.Height = 100;
+                description.Width = 450;
+                description.BorderStyle = BorderStyle.None;
+                toDoListPanel.Controls.Add(description);*/
             }
+        }
+        
+        private string descriptionParse (string description, int bottomLinePoint)
+        {
+            StringBuilder segmentedDescription = new StringBuilder();
+            int index = 0;
+
+            while(index < description.Length)
+            {
+                if(index + bottomLinePoint < description.Length)
+                {
+                    segmentedDescription.AppendLine(description.Substring(index, bottomLinePoint));
+                    index += bottomLinePoint;
+                }
+                else
+                {
+                    segmentedDescription.AppendLine(description.Substring(index));
+                    break;
+                }
+                
+            }
+            return segmentedDescription.ToString();
         }
 
 
@@ -69,7 +105,7 @@ namespace ToDoList
             if (checkBox.Checked)
             {
                 
-                MessageBox.Show("CheckBox işaretlendi.");
+                
                 
             }
             else
@@ -79,12 +115,7 @@ namespace ToDoList
                 
             }
         }
+
        
-
-
-
-
-
-
     }
 }

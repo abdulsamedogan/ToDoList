@@ -74,7 +74,7 @@ namespace ToDoList.SqlClasses
                     }
                     else
                     {
-                        MessageBox.Show("No data found on selected date.");
+                        
                     }
                 }
             }
