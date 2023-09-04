@@ -41,60 +41,93 @@ namespace ToDoList
 
         private void writeToDoList(DateTime date)
         {   
-            Label tempLabel = new Label(); 
+            Panel tempPanel = new Panel(); 
             List<List<string>> infoList = sqlOperations.getFromDate(date);
             for (int i = 0; i < infoList.Count; i++)
             {
 
-
+                int bottomLinePoint = 50;
+                Label title = new Label();
+                title.Location = new Point(20, 20);
+                title.Text = textParse(infoList[i][0].ToString(), bottomLinePoint);
+                title.AutoSize = true;  
+                
                 CheckBox checkBox = new CheckBox();
+                checkBox.Text = "";
                 checkBox.CheckedChanged += checkBox_CheckedChanged;
-                checkBox.Text = infoList[i][0].ToString();
-                checkBox.Width = 200;
-               
-                checkBox.Location = new Point(3, tempLabel.Bottom+10 );
-                toDoListPanel.Controls.Add(checkBox);
+                checkBox.Location = new Point(3, 16);
+                
 
-                int bottomLinePoint = 80;
+                
+
+                Button editButton = new Button();
+                editButton.Location = new Point(325, 16);
+                
+
+                Button deleteButton = new Button();
+                deleteButton.Location = new Point(400, 16);
+                
+
+                bottomLinePoint = 80;
 
                 Label description = new Label();
-                description.Text = descriptionParse(infoList[i][1].ToString(), bottomLinePoint);
+                description.Text = textParse(infoList[i][1].ToString(), bottomLinePoint);
                 description.AutoSize = true;
-                description.Location = new Point(40, checkBox.Bottom+1);
-                tempLabel = description;
-                toDoListPanel.Controls.Add(description);
+                description.Location = new Point(40, title.Bottom);
+               
 
-                /*RichTextBox description = new RichTextBox();
-                description.Text = infoList[i][1].ToString();
-                description.Location = new Point(40, 40 + (i * 50));
-                description.ReadOnly = true;
-                description.Height = 100;
-                description.Width = 450;
-                description.BorderStyle = BorderStyle.None;
-                toDoListPanel.Controls.Add(description);*/
+
+
+                Panel toDo = new Panel();
+                toDo.Size = new Size(500, 200);
+                toDo.BackColor= Color.White;
+                toDo.Location = new Point(18,0 + (i * tempPanel.Bottom) +10);
+                tempPanel=toDo;
+                toDo.Controls.Add(title);
+                toDo.Controls.Add(deleteButton);
+                toDo.Controls.Add(editButton);
+                toDo.Controls.Add(checkBox);
+                toDo.Controls.Add(description);
+                toDoListPanel.Controls.Add(toDo);
+                
             }
         }
         
-        private string descriptionParse (string description, int bottomLinePoint)
+        private string textParse (string description, int bottomLinePoint)
         {
             StringBuilder segmentedDescription = new StringBuilder();
             int index = 0;
 
-            while(index < description.Length)
+            while (index < description.Length)
             {
-                if(index + bottomLinePoint < description.Length)
+                if (index + bottomLinePoint < description.Length)
                 {
-                    segmentedDescription.AppendLine(description.Substring(index, bottomLinePoint));
-                    index += bottomLinePoint;
+                    
+                    string segment = description.Substring(index, bottomLinePoint);
+
+                    
+                    int lastSpaceIndex = segment.LastIndexOf(' ');
+                    if (lastSpaceIndex != -1)
+                    {
+                        segmentedDescription.AppendLine(segment.Substring(0, lastSpaceIndex));
+                        index += lastSpaceIndex + 1; 
+                    }
+                    else
+                    {
+                        
+                        segmentedDescription.AppendLine(segment);
+                        index += bottomLinePoint;
+                    }
                 }
                 else
                 {
+                    
                     segmentedDescription.AppendLine(description.Substring(index));
                     break;
                 }
-                
             }
             return segmentedDescription.ToString();
+
         }
 
 
@@ -116,6 +149,23 @@ namespace ToDoList
             }
         }
 
-       
+        /*// MouseEnter olayı butona fare geldiğinde tetiklenir
+        button.MouseEnter += Button_MouseEnter;
+            // MouseLeave olayı butondan fare çıkıldığında tetiklenir
+            button.MouseLeave += Button_MouseLeave;
+        }
+
+    private void Button_MouseEnter(object sender, EventArgs e)
+    {
+        // Butonun görünürlüğünü true yaparak görünür hale getiriyoruz
+        button.Visible = true;
     }
+
+    private void Button_MouseLeave(object sender, EventArgs e)
+    {
+        // Butonun görünürlüğünü false yaparak gizli hale getiriyoruz
+        button.Visible = false;
+    }*/
+
+}
 }

@@ -35,21 +35,20 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addListFormButton = new System.Windows.Forms.Button();
             this.toDoListPanel = new System.Windows.Forms.Panel();
-            this.toDoListPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(941, 41);
+            this.panel1.Location = new System.Drawing.Point(1557, 41);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(242, 546);
+            this.panel1.Size = new System.Drawing.Size(271, 713);
             this.panel1.TabIndex = 1;
             // 
             // panel2
             // 
-            this.panel2.Location = new System.Drawing.Point(307, 314);
+            this.panel2.Location = new System.Drawing.Point(295, 383);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(537, 245);
+            this.panel2.Size = new System.Drawing.Size(1163, 245);
             this.panel2.TabIndex = 2;
             // 
             // monthCalendarMain
@@ -66,7 +65,7 @@
             // 
             // addListFormButton
             // 
-            this.addListFormButton.Location = new System.Drawing.Point(462, 3);
+            this.addListFormButton.Location = new System.Drawing.Point(766, 12);
             this.addListFormButton.Name = "addListFormButton";
             this.addListFormButton.Size = new System.Drawing.Size(75, 23);
             this.addListFormButton.TabIndex = 6;
@@ -78,17 +77,17 @@
             // 
             this.toDoListPanel.AutoScroll = true;
             this.toDoListPanel.BackColor = System.Drawing.SystemColors.Info;
-            this.toDoListPanel.Controls.Add(this.addListFormButton);
-            this.toDoListPanel.Location = new System.Drawing.Point(307, 41);
+            this.toDoListPanel.Location = new System.Drawing.Point(295, 50);
             this.toDoListPanel.Name = "toDoListPanel";
-            this.toDoListPanel.Size = new System.Drawing.Size(537, 252);
+            this.toDoListPanel.Size = new System.Drawing.Size(1163, 289);
             this.toDoListPanel.TabIndex = 5;
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1218, 613);
+            this.ClientSize = new System.Drawing.Size(1855, 806);
+            this.Controls.Add(this.addListFormButton);
             this.Controls.Add(this.toDoListPanel);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.monthCalendarMain);
@@ -96,7 +95,6 @@
             this.Name = "mainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.mainForm_Load);
-            this.toDoListPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
