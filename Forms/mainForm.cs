@@ -15,6 +15,7 @@ namespace ToDoList
 {
     public partial class mainForm : Form
     {
+
         public mainForm()
         {
             InitializeComponent();
@@ -45,13 +46,21 @@ namespace ToDoList
             List<List<string>> infoList = sqlOperations.getFromDate(date);
             for (int i = 0; i < infoList.Count; i++)
             {
+                int bottomLinePoint = 100;
+                string titleText = infoList[i][0].ToString();
 
-                int bottomLinePoint = 50;
-                Label title = new Label();
-                title.Location = new Point(20, 20);
-                title.Text = textParse(infoList[i][0].ToString(), bottomLinePoint);
-                title.AutoSize = true;  
+
+                RichTextBox titleBox = new RichTextBox();
+
+                titleBox.Location = new Point(20, 20);
+                titleBox.BackColor = Color.White;
+                titleBox.BorderStyle= BorderStyle.None;
+                titleBox.Multiline = true;
+                titleBox.ReadOnly = true;
+                titleBox.ScrollBars = RichTextBoxScrollBars.None;
                 
+                titleBox = AddTextToRichTextBox(titleText, bottomLinePoint,titleBox);
+
                 CheckBox checkBox = new CheckBox();
                 checkBox.Text = "";
                 checkBox.CheckedChanged += checkBox_CheckedChanged;
@@ -61,75 +70,94 @@ namespace ToDoList
                 
 
                 Button editButton = new Button();
-                editButton.Location = new Point(325, 16);
-                
+                editButton.Location = new Point(695, 16);
+                editButton.Size = new Size(25, 25);
+                editButton.Click += EditButton_Click;
 
                 Button deleteButton = new Button();
-                deleteButton.Location = new Point(400, 16);
-                
+                deleteButton.Location = new Point(725, 16);
+                deleteButton.Size = new Size(25, 25);
 
                 bottomLinePoint = 80;
 
-                Label description = new Label();
-                description.Text = textParse(infoList[i][1].ToString(), bottomLinePoint);
-                description.AutoSize = true;
-                description.Location = new Point(40, title.Bottom);
-               
+                string descriptionText = infoList[i][1].ToString();
+                RichTextBox descriptionBox = new RichTextBox();
+                descriptionBox.Location = new Point(40, titleBox.Bottom +10);
+                descriptionBox.BackColor = Color.White;
+                descriptionBox.BorderStyle = BorderStyle.None;
+                descriptionBox.Multiline = true;
+                descriptionBox.ReadOnly = true;
+                descriptionBox.ScrollBars = RichTextBoxScrollBars.None;
+
+                descriptionBox = AddTextToRichTextBox(descriptionText, bottomLinePoint, descriptionBox);
 
 
-
+                
                 Panel toDo = new Panel();
-                toDo.Size = new Size(500, 200);
+                toDo.AutoSize = true;
                 toDo.BackColor= Color.White;
                 toDo.Location = new Point(18,0 + (i * tempPanel.Bottom) +10);
                 tempPanel=toDo;
-                toDo.Controls.Add(title);
+
+                toDo.Controls.Add(titleBox);
                 toDo.Controls.Add(deleteButton);
                 toDo.Controls.Add(editButton);
                 toDo.Controls.Add(checkBox);
-                toDo.Controls.Add(description);
+                toDo.Controls.Add(descriptionBox);
                 toDoListPanel.Controls.Add(toDo);
                 
             }
         }
-        
-        private string textParse (string description, int bottomLinePoint)
+       
+
+        private RichTextBox AddTextToRichTextBox(string text, int bottomLinePoint, RichTextBox titleBox)
         {
-            StringBuilder segmentedDescription = new StringBuilder();
+
             int index = 0;
 
-            while (index < description.Length)
+            while (index < text.Length)
             {
-                if (index + bottomLinePoint < description.Length)
+                if (index + bottomLinePoint < text.Length)
                 {
-                    
-                    string segment = description.Substring(index, bottomLinePoint);
 
-                    
+                    string segment = text.Substring(index, bottomLinePoint);
+
+
                     int lastSpaceIndex = segment.LastIndexOf(' ');
                     if (lastSpaceIndex != -1)
                     {
-                        segmentedDescription.AppendLine(segment.Substring(0, lastSpaceIndex));
-                        index += lastSpaceIndex + 1; 
+                        titleBox.AppendText(segment.Substring(0, lastSpaceIndex));
+                        titleBox.AppendText(Environment.NewLine);
+                        index += lastSpaceIndex + 1;
                     }
                     else
                     {
-                        
-                        segmentedDescription.AppendLine(segment);
+
+                        titleBox.AppendText(segment);
+
                         index += bottomLinePoint;
                     }
                 }
                 else
                 {
-                    
-                    segmentedDescription.AppendLine(description.Substring(index));
+
+                    titleBox.AppendText(text.Substring(index));
+
                     break;
                 }
             }
-            return segmentedDescription.ToString();
+            Size textSize = TextRenderer.MeasureText(text, titleBox.Font);
+            titleBox.Width = textSize.Width + 10;
+            titleBox.Height = textSize.Height * (titleBox.Lines.Length + 1);
+            return titleBox;
+
 
         }
 
+        private void EditButton_Click(object sender, EventArgs e)
+        {
+            
+        }
 
         private void checkBox_CheckedChanged(object sender, EventArgs e)
         {
