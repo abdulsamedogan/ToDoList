@@ -93,29 +93,65 @@ namespace ToDoList.SqlClasses
             return infoList;
         }
 
-        public static void updateCheckBox (string title)
+        public static void updateCheckBox (int id)
         {
             try
             {
                 SqlConnectionClass.OpenConnection();
 
-                string query = "UPDATE List SET check = 1 WHERE Title = @Title";
+                string query = "UPDATE List SET [Check] = 'true' WHERE id = @id";
                 using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
                 {
 
 
 
-                    cmd.Parameters.AddWithValue("@Title", title);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
 
-                   
                 }
-                SqlConnectionClass.CloseConnection();
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Hata: " + ex.Message);
             }
+            finally
+            {
+                SqlConnectionClass.CloseConnection();
+            }
 
+        }
+
+        public static int getID(DateTime date, string title, string description)
+        {
+            int generatedID = 0;
+            try
+            {
+                SqlConnectionClass.OpenConnection();
+
+                string query = "SELECT id FROM dbo.List WHERE Date = @selectedDate AND Title = @title AND Description = @description";
+                using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
+                {
+                    cmd.Parameters.AddWithValue("@selectedDate", date);
+                    cmd.Parameters.AddWithValue("@title", title);
+                    cmd.Parameters.AddWithValue("@description", description);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            generatedID = reader.GetInt32(0);
+                        }
+                    }
+                }
+                SqlConnectionClass.CloseConnection();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hata: " + ex.Message);
+            }
+            return generatedID;
+            
         }
 
     }

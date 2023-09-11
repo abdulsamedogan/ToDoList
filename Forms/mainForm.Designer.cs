@@ -77,7 +77,7 @@
             // toDoListPanel
             // 
             this.toDoListPanel.AutoScroll = true;
-            this.toDoListPanel.BackColor = System.Drawing.SystemColors.Info;
+            this.toDoListPanel.BackColor = System.Drawing.Color.SandyBrown;
             this.toDoListPanel.Location = new System.Drawing.Point(295, 41);
             this.toDoListPanel.Name = "toDoListPanel";
             this.toDoListPanel.Size = new System.Drawing.Size(784, 225);

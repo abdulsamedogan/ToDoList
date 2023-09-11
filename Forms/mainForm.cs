@@ -22,7 +22,7 @@ namespace ToDoList
         }
         private void mainForm_Load(object sender, EventArgs e)
         {
-            writeToDoList(monthCalendarMain.SelectionStart);
+            CreateToDoPanel(monthCalendarMain.SelectionStart);
             
         }
         private void addListFormButton_Click(object sender, EventArgs e)
@@ -36,11 +36,11 @@ namespace ToDoList
         private void monthCalendarMain_DateChanged(object sender, DateRangeEventArgs e)
         {
             toDoListPanel.Controls.Clear();
-            writeToDoList(monthCalendarMain.SelectionStart);
+            CreateToDoPanel(monthCalendarMain.SelectionStart);
             
         }
 
-        private void writeToDoList(DateTime date)
+        /*private void writeToDoList(DateTime date)
         {   
             Panel tempPanel = new Panel(); 
             List<List<string>> infoList = sqlOperations.getFromDate(date);
@@ -91,7 +91,7 @@ namespace ToDoList
 
                 descriptionBox = AddTextToRichTextBox(descriptionText, bottomLinePoint, descriptionBox);
 
-
+                
                 
                 Panel toDo = new Panel();
                 toDo.AutoSize = true;
@@ -107,9 +107,93 @@ namespace ToDoList
                 toDoListPanel.Controls.Add(toDo);
                 
             }
+        }*/
+
+        public void CreateToDoPanel(DateTime date)
+        {
+            Panel tempPanel = new Panel();
+            List<List<string>> infoList = sqlOperations.getFromDate(date);
+            for (int i = 0; i < infoList.Count; i++)
+            {
+                Panel toDo = CreateToDoItem(infoList[i]);
+                toDo.AutoSize = true;
+                toDo.BackColor = Color.White;
+                toDo.Location = new Point(18, 0 + (i * tempPanel.Bottom) + 10);
+                toDo.Tag = false; // Başlangıçta butonlar gizli
+
+                // Panele MouseEnter ve MouseLeave olaylarını ekleyin.
+                toDo.MouseEnter += ToDo_MouseEnter;
+                toDo.MouseLeave += ToDo_MouseLeave;
+                tempPanel = toDo;
+                toDoListPanel.Controls.Add(toDo);
+            }
+
+            
         }
        
+        private Panel CreateToDoItem(List<string> info)
+        {
+            Panel toDo = new Panel();
 
+
+            RichTextBox titleBox = CreateRichTextBox(info[0],20,20, 100);
+            CheckBox checkBox = CreateCheckBox(3);
+            Button editButton = CreateButton(695);
+            Button deleteButton = CreateButton(725);
+            RichTextBox descriptionBox = CreateRichTextBox(info[1],40, titleBox.Bottom + 10, 80 );
+            titleBox.Tag = sqlOperations.getID(monthCalendarMain.SelectionStart, info[0], info[1]);
+            editButton.Visible = false;
+            deleteButton.Visible = false;
+
+
+            toDo.Controls.Add(titleBox);
+            toDo.Controls.Add(checkBox);
+            toDo.Controls.Add(editButton);
+            toDo.Controls.Add(deleteButton);
+            toDo.Controls.Add(descriptionBox);
+
+            return toDo;
+        }
+
+        private RichTextBox CreateRichTextBox(string text, int left, int right ,int bottomLinePoint)
+        {
+           
+
+            RichTextBox titleBox = new RichTextBox();
+            titleBox.Location = new Point(left, right);
+            titleBox.BackColor = Color.White;
+            titleBox.BorderStyle = BorderStyle.None;
+            titleBox.Multiline = true;
+            titleBox.ReadOnly = true;
+            titleBox.ScrollBars = RichTextBoxScrollBars.None;
+
+            titleBox = AddTextToRichTextBox(text, bottomLinePoint, titleBox);
+            return titleBox;
+        }
+
+        private CheckBox CreateCheckBox(int left)
+        {
+         
+            CheckBox checkBox = new CheckBox();
+            checkBox.Text = "";
+            checkBox.CheckedChanged += CheckBox_CheckedChanged;
+            checkBox.Location = new Point(3, 16);
+
+            return checkBox;
+        }
+
+        private Button CreateButton(int left)
+        {
+            
+            Button button = new Button();
+            button.Location = new Point(left, 16);
+            button.Size = new Size(25, 25);
+            button.Click += EditButton_Click;
+           
+
+
+            return button;
+        }
         private RichTextBox AddTextToRichTextBox(string text, int bottomLinePoint, RichTextBox titleBox)
         {
 
@@ -159,15 +243,28 @@ namespace ToDoList
             
         }
 
-        private void checkBox_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
 
             if (checkBox.Checked)
             {
-                
-                
-                
+                Panel parentPanel = (Panel)checkBox.Parent; 
+
+               
+                foreach (Control control in parentPanel.Controls)
+                {
+                    if (control is RichTextBox richTextBox)
+                    {
+                        int richTextBoxID= Convert.ToInt32(richTextBox.Tag);
+                        sqlOperations.updateCheckBox(richTextBoxID);
+                        toDoListPanel.Controls.Clear();
+                        CreateToDoPanel(monthCalendarMain.SelectionStart);
+                        break; 
+                    }
+                }
+
+
             }
             else
             {
@@ -177,23 +274,36 @@ namespace ToDoList
             }
         }
 
-        /*// MouseEnter olayı butona fare geldiğinde tetiklenir
-        button.MouseEnter += Button_MouseEnter;
-            // MouseLeave olayı butondan fare çıkıldığında tetiklenir
-            button.MouseLeave += Button_MouseLeave;
+        private void ToDo_MouseEnter(object sender, EventArgs e)
+        {
+            Panel panel = (Panel)sender;
+            // Panele ait butonları görünür yap
+            panel.Tag = true;
+            UpdateButtonVisibility(panel);
         }
 
-    private void Button_MouseEnter(object sender, EventArgs e)
-    {
-        // Butonun görünürlüğünü true yaparak görünür hale getiriyoruz
-        button.Visible = true;
+        private void ToDo_MouseLeave(object sender, EventArgs e)
+        {
+            Panel panel = (Panel)sender;
+            // Panele ait butonları gizle
+            panel.Tag = false;
+            UpdateButtonVisibility(panel);
+        }
+        private void UpdateButtonVisibility(Panel panel)
+        {
+            bool buttonsVisible = (bool)panel.Tag;
+            foreach (Control control in panel.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.Visible = buttonsVisible;
+                }
+            }
+        }
+
     }
 
-    private void Button_MouseLeave(object sender, EventArgs e)
-    {
-        // Butonun görünürlüğünü false yaparak gizli hale getiriyoruz
-        button.Visible = false;
-    }*/
+  
 
 }
-}
+
