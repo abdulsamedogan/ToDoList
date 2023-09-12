@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToDoList.Classes;
+using ToDoList.Forms;
 using ToDoList.SqlClasses;
 
 namespace ToDoList
@@ -119,11 +120,9 @@ namespace ToDoList
                 toDo.AutoSize = true;
                 toDo.BackColor = Color.White;
                 toDo.Location = new Point(18, 0 + (i * tempPanel.Bottom) + 10);
-                toDo.Tag = false; // Başlangıçta butonlar gizli
 
-                // Panele MouseEnter ve MouseLeave olaylarını ekleyin.
-                toDo.MouseEnter += ToDo_MouseEnter;
-                toDo.MouseLeave += ToDo_MouseLeave;
+                
+
                 tempPanel = toDo;
                 toDoListPanel.Controls.Add(toDo);
             }
@@ -142,8 +141,19 @@ namespace ToDoList
             Button deleteButton = CreateButton(725);
             RichTextBox descriptionBox = CreateRichTextBox(info[1],40, titleBox.Bottom + 10, 80 );
             titleBox.Tag = sqlOperations.getID(monthCalendarMain.SelectionStart, info[0], info[1]);
-            editButton.Visible = false;
-            deleteButton.Visible = false;
+
+    
+
+            toDo.Tag = false;
+
+            
+            //toDo.MouseEnter += ToDo_MouseEnter;
+            //toDo.MouseLeave += ToDo_MouseLeave;
+
+           
+           
+            //editButton.Visible = false;
+           // deleteButton.Visible = false;
 
 
             toDo.Controls.Add(titleBox);
@@ -166,7 +176,7 @@ namespace ToDoList
             titleBox.Multiline = true;
             titleBox.ReadOnly = true;
             titleBox.ScrollBars = RichTextBoxScrollBars.None;
-
+            titleBox.MouseEnter += Element_MouseEnter;
             titleBox = AddTextToRichTextBox(text, bottomLinePoint, titleBox);
             return titleBox;
         }
@@ -178,7 +188,7 @@ namespace ToDoList
             checkBox.Text = "";
             checkBox.CheckedChanged += CheckBox_CheckedChanged;
             checkBox.Location = new Point(3, 16);
-
+            checkBox.MouseEnter += Element_MouseEnter;
             return checkBox;
         }
 
@@ -186,10 +196,11 @@ namespace ToDoList
         {
             
             Button button = new Button();
+            button.MouseEnter += Element_MouseEnter;
             button.Location = new Point(left, 16);
             button.Size = new Size(25, 25);
             button.Click += EditButton_Click;
-           
+            button.Enabled = true;
 
 
             return button;
@@ -240,7 +251,8 @@ namespace ToDoList
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            
+            editForm editForm = new editForm();
+            editForm.Show();
         }
 
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
@@ -269,15 +281,21 @@ namespace ToDoList
             else
             {
                 
-                MessageBox.Show("CheckBox işareti kaldırıldı.");
+                
                 
             }
         }
+        private void Element_MouseEnter(object sender, EventArgs e)
+        {
 
+            Panel panel = (Panel)((Control)sender).Parent;
+            panel.Tag = true;
+            UpdateButtonVisibility(panel);
+        }
         private void ToDo_MouseEnter(object sender, EventArgs e)
         {
             Panel panel = (Panel)sender;
-            // Panele ait butonları görünür yap
+            
             panel.Tag = true;
             UpdateButtonVisibility(panel);
         }
@@ -285,7 +303,7 @@ namespace ToDoList
         private void ToDo_MouseLeave(object sender, EventArgs e)
         {
             Panel panel = (Panel)sender;
-            // Panele ait butonları gizle
+            
             panel.Tag = false;
             UpdateButtonVisibility(panel);
         }
@@ -301,6 +319,15 @@ namespace ToDoList
             }
         }
 
+        
+
+        private void Element_MouseLeave(object sender, EventArgs e)
+        {
+            
+            Panel panel = (Panel)((Control)sender).Parent;
+            panel.Tag = false;
+            UpdateButtonVisibility(panel);
+        }
     }
 
   

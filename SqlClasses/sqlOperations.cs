@@ -113,7 +113,7 @@ namespace ToDoList.SqlClasses
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Hata: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
             }
             finally
             {
@@ -148,7 +148,7 @@ namespace ToDoList.SqlClasses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Hata: " + ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
             return generatedID;
             
