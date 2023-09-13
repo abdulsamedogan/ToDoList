@@ -21,7 +21,7 @@ namespace ToDoList
 
         private void addListForm_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("No data found on selected date.");
+            
 
         }
 

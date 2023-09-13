@@ -51,6 +51,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(784, 260);
             this.panel2.TabIndex = 2;
+            
             // 
             // monthCalendarMain
             // 
@@ -115,8 +116,8 @@
         private System.Windows.Forms.MonthCalendar monthCalendarMain;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Button addListFormButton;
-        private System.Windows.Forms.Panel toDoListPanel;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel toDoListPanel;
     }
 }
 

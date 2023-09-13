@@ -12,6 +12,8 @@ using ToDoList.Classes;
 using ToDoList.Forms;
 using ToDoList.SqlClasses;
 
+
+
 namespace ToDoList
 {
     public partial class mainForm : Form
@@ -23,7 +25,7 @@ namespace ToDoList
         }
         private void mainForm_Load(object sender, EventArgs e)
         {
-            CreateToDoPanel(monthCalendarMain.SelectionStart);
+            Reflesh();
             
         }
         private void addListFormButton_Click(object sender, EventArgs e)
@@ -31,13 +33,14 @@ namespace ToDoList
         {
             
             addListForm addListForm = new addListForm();
+            addListForm.FormClosing += Form_FormClosing;
             addListForm.Show();
+            Reflesh();
         }
 
         private void monthCalendarMain_DateChanged(object sender, DateRangeEventArgs e)
         {
-            toDoListPanel.Controls.Clear();
-            CreateToDoPanel(monthCalendarMain.SelectionStart);
+            Reflesh();
             
         }
 
@@ -113,7 +116,7 @@ namespace ToDoList
         public void CreateToDoPanel(DateTime date)
         {
             Panel tempPanel = new Panel();
-            List<List<string>> infoList = sqlOperations.getFromDate(date);
+            List<List<string>> infoList = sqlOperations.getByDate(date);
             for (int i = 0; i < infoList.Count; i++)
             {
                 Panel toDo = CreateToDoItem(infoList[i]);
@@ -142,7 +145,8 @@ namespace ToDoList
             RichTextBox descriptionBox = CreateRichTextBox(info[1],40, titleBox.Bottom + 10, 80 );
             titleBox.Tag = sqlOperations.getID(monthCalendarMain.SelectionStart, info[0], info[1]);
 
-    
+            editButton.Click += EditButton_Click;
+            deleteButton.Click += DeleteButton_Click;
 
             toDo.Tag = false;
 
@@ -199,7 +203,7 @@ namespace ToDoList
             button.MouseEnter += Element_MouseEnter;
             button.Location = new Point(left, 16);
             button.Size = new Size(25, 25);
-            button.Click += EditButton_Click;
+            
             button.Enabled = true;
 
 
@@ -251,39 +255,51 @@ namespace ToDoList
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            editForm editForm = new editForm();
+            Button editButton = (Button)sender;
+            Panel parentPanel = (Panel)editButton.Parent;
+            editForm editForm = new editForm(getTagID(parentPanel));
+            editForm.FormClosing += Form_FormClosing;
             editForm.Show();
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            Button deleteButton = (Button)sender;
+            Panel parentPanel = (Panel)deleteButton.Parent;
+            deleteForm deleteForm = new deleteForm(getTagID(parentPanel));
+            deleteForm.FormClosing += Form_FormClosing;
+            deleteForm.Show();
         }
 
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
+            
+            Panel parentPanel = (Panel)checkBox.Parent;
 
             if (checkBox.Checked)
             {
-                Panel parentPanel = (Panel)checkBox.Parent; 
 
-               
+                sqlOperations.updateCheckBox(getTagID(parentPanel));
+                Reflesh();
+            }
+          
+        }
+
+        private int getTagID(Panel parentPanel)
+        {
+            int richTextBoxID=0;
+
                 foreach (Control control in parentPanel.Controls)
                 {
                     if (control is RichTextBox richTextBox)
                     {
-                        int richTextBoxID= Convert.ToInt32(richTextBox.Tag);
-                        sqlOperations.updateCheckBox(richTextBoxID);
-                        toDoListPanel.Controls.Clear();
-                        CreateToDoPanel(monthCalendarMain.SelectionStart);
+                        richTextBoxID= Convert.ToInt32(richTextBox.Tag);
+                        
                         break; 
                     }
                 }
-
-
-            }
-            else
-            {
-                
-                
-                
-            }
+            return richTextBoxID;
         }
         private void Element_MouseEnter(object sender, EventArgs e)
         {
@@ -328,9 +344,23 @@ namespace ToDoList
             panel.Tag = false;
             UpdateButtonVisibility(panel);
         }
+
+        private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            Reflesh();
+        }
+
+        public void Reflesh()
+        {
+            toDoListPanel.Controls.Clear();
+            CreateToDoPanel(monthCalendarMain.SelectionStart);
+        }
+
+        
     }
 
-  
+    
 
 }
 

@@ -45,7 +45,7 @@ namespace ToDoList.SqlClasses
 
         }
 
-        public static List<List<string>> getFromDate(DateTime date)
+        public static List<List<string>> getByDate(DateTime date)
         {
             List<List<string>> infoList = new List<List<string>>();
             SqlDataReader reader = null;
@@ -154,5 +154,109 @@ namespace ToDoList.SqlClasses
             
         }
 
+        public static string[] getValueByID(int id)
+        {
+            string[] values = new string[2];
+            SqlDataReader reader = null;
+            try
+            {
+                SqlConnectionClass.OpenConnection();
+
+                string query = "SELECT Title,Description FROM dbo.List WHERE id = @id ";
+                using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
+                {
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+
+                        while (reader.Read())
+                        {
+                            values[0] = reader.GetString(0);
+                            values[1] = reader.GetString(1);
+                        }
+
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+
+
+                SqlConnectionClass.CloseConnection();
+
+
+            }
+            return values;
+
+        }
+
+        public static void updateTitleAndDescription(int id, string title, string description)
+        {
+            try
+            {
+                SqlConnectionClass.OpenConnection();
+
+                string query = "UPDATE List SET Title = @title, Description = @description WHERE id = @id";
+                using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
+                {
+
+                    cmd.Parameters.AddWithValue("@title", title);
+                    cmd.Parameters.AddWithValue("@description", description);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                SqlConnectionClass.CloseConnection();
+            }
+
+        }
+
+        public static void DeleteDataByID(int id)
+        {
+        
+            try
+            {
+                SqlConnectionClass.OpenConnection();
+
+                string query = "DELETE FROM dbo.List WHERE id = @id ";
+                using (SqlCommand cmd = new SqlCommand(query, SqlConnectionClass.GetConnection()))
+                {
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+            finally
+            {
+              
+
+                SqlConnectionClass.CloseConnection();
+
+
+            }
+            
+
+        }
     }
 }
